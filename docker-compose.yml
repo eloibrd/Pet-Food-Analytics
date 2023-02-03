@@ -1,39 +1,31 @@
-version: '3'
+version: '3.8'
 services:
+  # Influx database
   influxdb:
+    container_name: PFT-influxdb
     image: influxdb:latest
     ports:
       - '8086:8086'
+    #  Persistent storage
     volumes:
       - influxdb-storage:/var/lib/influxdb
-    environment:
-      - INFLUXDB_DB=db0
-      - INFLUXDB_ADMIN_USER=${INFLUXDB_USERNAME}
-      - INFLUXDB_ADMIN_PASSWORD=${INFLUXDB_PASSWORD}
-  chronograf:
-    image: chronograf:latest
-    ports:
-      - '127.0.0.1:8888:8888'
-    volumes:
-      - chronograf-storage:/var/lib/chronograf
-    depends_on:
-      - influxdb
-    environment:
-      - INFLUXDB_URL=http://influxdb:8086
-      - INFLUXDB_USERNAME=${INFLUXDB_USERNAME}
-      - INFLUXDB_PASSWORD=${INFLUXDB_PASSWORD}
+    env_file:
+      - ${ENV_FILE}
+  #  Grafana for data visualization
   grafana:
+    container_name: PFT-grafana
     image: grafana/grafana:latest
     ports:
       - '3000:3000'
+    # Persistent storage & importing Grafana config and provisioning
     volumes:
       - grafana-storage:/var/lib/grafana
       - ./grafana-provisioning/:/etc/grafana/provisioning
     depends_on:
       - influxdb
-    environment:
-      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
-      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+    env_file:
+      - ${ENV_FILE}
+
 volumes:
   influxdb-storage:
   chronograf-storage:

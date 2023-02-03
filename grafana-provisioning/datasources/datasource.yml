@@ -4,8 +4,8 @@ datasources:
     type: influxdb
     access: proxy
     database: db0
-    user: admin
-    password: admin
+    user: ${INFLUXDB_ADMIN_USER}
+    password: ${INFLUXDB_ADMIN_PASSWORD}
     url: http://influxdb:8086
     isDefault: true
     editable: true
