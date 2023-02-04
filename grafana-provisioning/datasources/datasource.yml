@@ -3,9 +3,14 @@ datasources:
   - name: InfluxDB
     type: influxdb
     access: proxy
-    database: db0
-    user: ${INFLUXDB_ADMIN_USER}
-    password: ${INFLUXDB_ADMIN_PASSWORD}
+    user: $INFLUXDB_ADMIN_USER
+    password: $INFLUXDB_ADMIN_PASSWORD
     url: http://influxdb:8086
     isDefault: true
     editable: true
+    jsonData:
+      version: Flux
+      organization: $DOCKER_INFLUXDB_INIT_ORG
+      defaultBucket: $DOCKER_INFLUXDB_INIT_BUCKET
+      tlsSkipVerify: true
+      timeInterval: "1m"  
