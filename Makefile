@@ -1,3 +1,3 @@
-.PHONY start-influx-dev
+.PHONY start-influx-dev:
 start-influx-dev:
-	docker-compose --env-file environments/dev.env up
+	docker compose up -d
